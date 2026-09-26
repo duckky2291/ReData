@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ReData of D - Hệ thống quản lý, quét và khôi phục lưu trữ file chuyên sâu">
+  <title>ReData of D - Phục Hồi & Lưu Trữ Dữ Liệu</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+</head>
+<body>
+  <!-- Background Glow & Particles -->
+  <div class="ambient-glow glow-top-left"></div>
+  <div class="ambient-glow glow-bottom-right"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="app-layout">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="logo-wrapper">
+          <img src="assets/logo.jpg" alt="ReData of D Logo" class="app-logo">
+          <span class="logo-pulse"></span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title-wrap">
+            <h1 class="brand-title">ReData <span>of D</span></h1>
+            <span class="badge-version">v2.4 PRO</span>
+          </div>
+          <p class="brand-subtitle">Hệ thống quét & lưu trữ dữ liệu an toàn từ Backend</p>
+        </div>
+      </div>
+
+      <!-- Header Actions & Status -->
+      <div class="header-controls">
+        <div class="system-status-chip" id="systemStatusChip">
+          <span class="status-dot online"></span>
+          <span class="status-label" id="statusLabelText">Backend: Sẵn sàng</span>
+        </div>
+        
+        <button class="btn-icon" id="btnOpenSettings" title="Cấu hình kết nối Backend" aria-label="Cài đặt">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Section 1: Link tải file trực tiếp do người dùng cung cấp -->
+      <section class="card section-direct-download" id="sectionDirectDownload">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon cyan-glow">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">1. Tải File Trực Tiếp Bằng Đường Link</h2>
+              <p class="card-desc">Nhập liên kết do bạn cung cấp để tải tệp dữ liệu về máy tính tức thì</p>
+            </div>
+          </div>
+          <span class="badge-accent">Direct Download</span>
+        </div>
+
+        <div class="download-input-container">
+          <div class="input-with-icon">
+            <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <input 
+              type="url" 
+              id="customDownloadUrl" 
+              class="form-control" 
+              placeholder="Dán đường link tải file tại đây (VD: https://server.redata.local/files/backup_2026.zip)..." 
+              value="https://storage.redata-server.io/downloads/ReData_System_Archive_v2.zip"
+            >
+            <button class="btn-clear-input" id="btnClearUrl" title="Xóa đường dẫn">&times;</button>
+          </div>
+
+          <button class="btn btn-primary btn-glow" id="btnDownloadFromUrl">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Tải File Về Máy Tính</span>
+          </button>
+        </div>
+
+        <!-- Quick Links / Presets -->
+        <div class="quick-preset-links">
+          <span class="preset-label">Link mẫu gợi ý:</span>
+          <button class="preset-tag" data-url="https://storage.redata.io/core/ReData_Full_Backup.zip" data-name="ReData_Full_Backup.zip">📦 Full Backup (.zip)</button>
+          <button class="preset-tag" data-url="https://storage.redata.io/database/PostgreSQL_Dump_2026.sql" data-name="PostgreSQL_Dump_2026.sql">🗄️ Database Dump (.sql)</button>
+          <button class="preset-tag" data-url="https://storage.redata.io/secure/Security_Audit_Report.pdf" data-name="Security_Audit_Report.pdf">📑 Audit Report (.pdf)</button>
+        </div>
+      </section>
+
+      <!-- Section 2: Quét các file từ backend & Danh sách file -->
+      <section class="card section-files-list">
+        <div class="files-header-bar">
+          <div class="card-title-group">
+            <div class="card-icon violet-glow">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">2. Danh Sách File Quét Từ Backend</h2>
+              <p class="card-desc">Các tệp tin được hệ thống Backend phát hiện và sẵn sàng phục hồi</p>
+            </div>
+          </div>
+
+          <div class="action-toolbar">
+            <!-- Search bar -->
+            <div class="search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="searchInput" placeholder="Tìm kiếm tên file, định dạng...">
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="filter-group" id="filterTabs">
+              <button class="filter-btn active" data-filter="all">Tất cả</button>
+              <button class="filter-btn" data-filter="database">Database</button>
+              <button class="filter-btn" data-filter="archive">Nén (Zip/Rar)</button>
+              <button class="filter-btn" data-filter="image">Hình ảnh</button>
+              <button class="filter-btn" data-filter="document">Tài liệu</button>
+            </div>
+
+            <!-- Scan Button -->
+            <button class="btn btn-secondary" id="btnScanFiles">
+              <svg class="scan-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+              <span id="scanBtnText">Quét File Backend</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Files Stats Bar -->
+        <div class="stats-counter-strip">
+          <div class="stat-item">
+            <span class="stat-number" id="statTotalFiles">0</span>
+            <span class="stat-label">Tổng số file</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number text-cyan" id="statTotalSize">0 MB</span>
+            <span class="stat-label">Tổng dung lượng</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number text-emerald" id="statSavedFiles">0</span>
+            <span class="stat-label">Đã lưu về máy</span>
+          </div>
+          <div class="stat-item auto-refresh-badge">
+            <span class="live-pulse"></span>
+            <span>Tự động đồng bộ hóa Backend</span>
+          </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-responsive">
+          <table class="files-table" id="filesTable">
+            <thead>
+              <tr>
+                <th width="4%" class="text-center">
+                  <label class="custom-checkbox-wrap" title="Chọn tất cả các file hiển thị">
+                    <input type="checkbox" id="selectAllCheckbox">
+                    <span class="checkbox-box"></span>
+                  </label>
+                </th>
+                <th width="36%">TÊN FILE & ĐƯỜNG DẪN</th>
+                <th width="15%">LOẠI TỆP</th>
+                <th width="15%">DUNG LƯỢNG</th>
+                <th width="15%">NGÀY CẬP NHẬT</th>
+                <th width="15%" class="text-right">THAO TÁC</th>
+              </tr>
+            </thead>
+            <tbody id="filesTableBody">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+
+          <!-- Empty State -->
+          <div class="empty-state hidden" id="emptyState">
+            <div class="empty-icon">📁</div>
+            <h3>Không tìm thấy file nào</h3>
+            <p>Hãy bấm nút "Quét File Backend" để kết nối và nhận danh sách file mới nhất.</p>
+            <button class="btn btn-primary" onclick="document.getElementById('btnScanFiles').click()">Quét Ngay</button>
+          </div>
+
+          <!-- Loading Skeleton -->
+          <div class="skeleton-loader hidden" id="tableLoader">
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+          </div>
+        </div>
+
+        <!-- Floating Batch Action Bar for Multiple Selected Files -->
+        <div class="batch-actions-bar" id="batchActionBar">
+          <div class="batch-info">
+            <span class="batch-badge" id="batchSelectedCount">0</span>
+            <span class="batch-label">file đã chọn</span>
+            <span class="batch-size" id="batchSelectedSize">(0 MB)</span>
+          </div>
+          <div class="batch-btns">
+            <button class="btn btn-secondary btn-sm" id="btnDeselectAll" onclick="handleDeselectAllClick()">Bỏ chọn</button>
+            <button class="btn btn-primary btn-glow" id="btnSaveSelectedFiles" onclick="handleBatchSaveClick()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span>Lưu các file đã chọn (<span id="batchBtnCount">0</span>)</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span>© 2026 <strong>ReData of D</strong> • Data Recovery & Transfer Protocol</span>
+      </div>
+      <div class="footer-right">
+        <span class="security-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          Mã hóa AES-256 GCM
+        </span>
+        <span class="backend-url-display" id="footerBackendDisplay">Backend: Mock Server (Local)</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL QUY TRÌNH LƯU FILE (MULTI-STEP WIZARD POPUP)           -->
+  <!-- ============================================================ -->
+  <div class="modal-backdrop hidden" id="saveFlowModal">
+    <div class="modal-container" role="dialog" aria-modal="true">
+      
+      <!-- Modal Progress Stepper -->
+      <div class="modal-stepper">
+        <div class="step-node active" id="stepNode1">
+          <div class="step-circle">1</div>
+          <span class="step-title">Xác nhận</span>
+        </div>
+        <div class="step-line" id="stepLine1"></div>
+        <div class="step-node" id="stepNode2">
+          <div class="step-circle">2</div>
+          <span class="step-title">Quét QR & SĐT</span>
+        </div>
+        <div class="step-line" id="stepLine2"></div>
+        <div class="step-node" id="stepNode3">
+          <div class="step-circle">3</div>
+          <span class="step-title">Keycode</span>
+        </div>
+        <div class="step-line" id="stepLine3"></div>
+        <div class="step-node" id="stepNode4">
+          <div class="step-circle">4</div>
+          <span class="step-title">Tải về</span>
+        </div>
+      </div>
+
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Đóng popup">&times;</button>
+
+      <!-- STEP 1: Popup Yêu Cầu Đồng Ý Lưu File -->
+      <div class="modal-step-pane active" id="paneStep1">
+        <div class="pane-header text-center">
+          <div class="icon-avatar-badge cyan">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </div>
+          <h3 class="pane-title">Xác Nhận Yêu Cầu Lưu File</h3>
+          <p class="pane-desc">Bạn có đồng ý yêu cầu backend trích xuất và lưu file này về máy tính không?</p>
+        </div>
+
+        <!-- Selected File Summary Box -->
+        <div class="file-summary-card" id="step1FileSummary">
+          <div class="file-icon-box" id="step1FileIcon">📄</div>
+          <div class="file-info-details">
+            <h4 class="file-title-text" id="step1FileName">Tên file đang chọn...</h4>
+            <div class="file-meta-row">
+              <span class="meta-tag" id="step1FileSize">Dung lượng: --</span>
+              <span class="meta-tag" id="step1FileType">Định dạng: --</span>
+              <span class="meta-tag" id="step1FileId">ID: #000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="confirmation-notice">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <div>
+            Quá trình lưu file sẽ yêu cầu xác thực 2 lớp qua <strong>Mã QR thiết bị</strong> và <strong>Số điện thoại</strong> đã đăng ký để đảm bảo an toàn dữ liệu.
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button class="btn btn-secondary" id="btnCancelStep1">Hủy bỏ</button>
+          <button class="btn btn-primary btn-glow" id="btnConfirmStep1">
+            <span>Đồng Ý & Tiếp Tục</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Popup Quét QR Scan & Nhập Số Điện Thoại -->
+      <div class="modal-step-pane" id="paneStep2">
+        <div class="pane-header text-center">
+          <div class="icon-avatar-badge purple">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <h3 class="pane-title">Quét Mã QR & Xác Thực Số Điện Thoại</h3>
+          <p class="pane-desc">Quét mã QR bằng ứng dụng xác thực hoặc điện thoại, sau đó nhập SĐT để nhận mã Keycode</p>
+        </div>
+
+        <div class="qr-and-phone-grid">
+          <!-- QR Scanner Display with Animated Laser -->
+          <div class="qr-container">
+            <div class="qr-frame">
+              <div class="laser-scanner-line"></div>
+              <!-- Futuristic SVG QR Code -->
+              <svg class="qr-code-svg" viewBox="0 0 200 200" width="160" height="160">
+                <!-- Outer Corners -->
+                <rect x="10" y="10" width="50" height="50" rx="6" fill="none" stroke="#00f2fe" stroke-width="6"/>
+                <rect x="22" y="22" width="26" height="26" rx="3" fill="#00f2fe"/>
+                
+                <rect x="140" y="10" width="50" height="50" rx="6" fill="none" stroke="#00f2fe" stroke-width="6"/>
+                <rect x="152" y="22" width="26" height="26" rx="3" fill="#00f2fe"/>
+
+                <rect x="10" y="140" width="50" height="50" rx="6" fill="none" stroke="#00f2fe" stroke-width="6"/>
+                <rect x="22" y="152" width="26" height="26" rx="3" fill="#00f2fe"/>
+
+                <!-- High-tech Grid Pattern -->
+                <rect x="75" y="15" width="16" height="16" fill="#8b5cf6" rx="2"/>
+                <rect x="105" y="15" width="16" height="36" fill="#00f2fe" rx="2"/>
+                <rect x="75" y="45" width="20" height="12" fill="#8b5cf6" rx="2"/>
+                
+                <rect x="15" y="75" width="30" height="15" fill="#00f2fe" rx="2"/>
+                <rect x="15" y="105" width="20" height="20" fill="#8b5cf6" rx="2"/>
+
+                <circle cx="100" cy="100" r="16" fill="#06b6d4"/>
+                <circle cx="100" cy="100" r="6" fill="#ffffff"/>
+
+                <rect x="140" y="75" width="18" height="18" fill="#8b5cf6" rx="2"/>
+                <rect x="170" y="85" width="15" height="30" fill="#00f2fe" rx="2"/>
+                <rect x="130" y="115" width="25" height="15" fill="#8b5cf6" rx="2"/>
+
+                <rect x="75" y="140" width="40" height="15" fill="#00f2fe" rx="2"/>
+                <rect x="75" y="165" width="20" height="20" fill="#8b5cf6" rx="2"/>
+                <rect x="110" y="165" width="35" height="18" fill="#8b5cf6" rx="2"/>
+                <rect x="160" y="155" width="25" height="25" fill="#00f2fe" rx="2"/>
+              </svg>
+              <div class="qr-corners">
+                <span class="corner tl"></span>
+                <span class="corner tr"></span>
+                <span class="corner bl"></span>
+                <span class="corner br"></span>
+              </div>
+            </div>
+            <span class="qr-caption">Mã phiên: <strong id="qrSessionId">RD-9824-SEC</strong></span>
+          </div>
+
+          <!-- Phone Number Input Section -->
+          <div class="phone-form-column">
+            <div class="form-group">
+              <label for="inputPhoneNumber" class="form-label">
+                <span>Số điện thoại xác nhận</span>
+                <span class="required-mark">*</span>
+              </label>
+              <div class="input-phone-wrapper">
+                <div class="country-prefix">
+                  <span>🇻🇳 +84</span>
+                </div>
+                <input 
+                  type="tel" 
+                  id="inputPhoneNumber" 
+                  class="form-control" 
+                  placeholder="Nhập 10 chữ số (VD: 0912345678)"
+                  maxlength="11"
+                  autocomplete="tel"
+                >
+              </div>
+              <p class="input-hint" id="phoneErrorMsg">Vui lòng nhập đúng số điện thoại di động hợp lệ.</p>
+            </div>
+
+            <!-- Quick Demo Button for effortless testing -->
+            <div class="quick-fill-box">
+              <button type="button" class="btn-text-link" id="btnQuickFillPhone">
+                ⚡ Điền nhanh SĐT mẫu (0988 123 456)
+              </button>
+            </div>
+
+            <div class="info-callout">
+              <p>Sau khi nhấn tiếp tục, hệ thống sẽ cấp mã <strong>Keycode</strong> mở khóa phiên tải dữ liệu.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button class="btn btn-secondary" id="btnBackToStep1">Quay lại</button>
+          <button class="btn btn-primary btn-glow" id="btnSubmitStep2" disabled>
+            <span>Tiếp Tục Nhập Keycode</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Popup Khung Nhập Keycode & Bấm RUN -->
+      <div class="modal-step-pane" id="paneStep3">
+        <div class="pane-header text-center">
+          <div class="icon-avatar-badge cyan">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
+          </div>
+          <h3 class="pane-title">Nhập Khung Keycode Bảo Mật</h3>
+          <p class="pane-desc">Nhập mã Keycode 6 ký tự để mở khóa quyền tải dữ liệu từ Backend</p>
+        </div>
+
+        <!-- Keycode Input Boxes -->
+        <div class="keycode-card-wrapper">
+          <div class="keycode-display-label">
+            <span>Mã bảo vệ ReData:</span>
+            <button class="badge-hint-key" id="btnAutoFillKeycode" title="Nhấn để tự động điền keycode hợp lệ">
+              Mã gợi ý: <strong id="hintKeycodeText">RD8826</strong> (Bấm để điền)
+            </button>
+          </div>
+
+          <div class="keycode-inputs-container" id="keycodeInputsRow">
+            <input type="text" maxlength="1" class="otp-box" data-index="0" autofocus>
+            <input type="text" maxlength="1" class="otp-box" data-index="1">
+            <input type="text" maxlength="1" class="otp-box" data-index="2">
+            <span class="otp-separator">-</span>
+            <input type="text" maxlength="1" class="otp-box" data-index="3">
+            <input type="text" maxlength="1" class="otp-box" data-index="4">
+            <input type="text" maxlength="1" class="otp-box" data-index="5">
+          </div>
+
+          <p class="keycode-status-hint" id="keycodeStatusHint">Nhập đủ 6 ký tự để kích hoạt nút RUN</p>
+        </div>
+
+        <!-- Step 3 Action: Nút RUN -->
+        <div class="modal-footer-actions">
+          <button class="btn btn-secondary" id="btnBackToStep2">Quay lại</button>
+          <button class="btn btn-run-action" id="btnRunExecution" disabled>
+            <svg class="run-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>RUN - BẮT ĐẦU LẤY FILE</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Chờ Backend Hoàn Thành Việc Lấy File Về Máy -->
+      <div class="modal-step-pane" id="paneStep4">
+        <div class="pane-header text-center">
+          <div class="icon-avatar-badge processing-pulse">
+            <div class="radar-spinner"></div>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </div>
+          <h3 class="pane-title">Đang Chờ Backend Lấy File Về Máy...</h3>
+          <p class="pane-desc">Hệ thống đang kết nối luồng dữ liệu bảo mật và truyền gói tin về máy tính</p>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="transfer-progress-card">
+          <div class="progress-info-row">
+            <span class="progress-status-text" id="transferStatusMessage">Đang khởi tạo kết nối backend...</span>
+            <span class="progress-percentage" id="transferPercentage">0%</span>
+          </div>
+
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">
+              <span class="shimmer-effect"></span>
+            </div>
+          </div>
+
+          <div class="progress-stats-grid">
+            <div class="pstat">
+              <span class="pstat-label">Tốc độ tải:</span>
+              <span class="pstat-val" id="downloadSpeedVal">38.4 MB/s</span>
+            </div>
+            <div class="pstat">
+              <span class="pstat-label">Đã truyền tải:</span>
+              <span class="pstat-val" id="downloadTransferredVal">0 MB / 0 MB</span>
+            </div>
+            <div class="pstat">
+              <span class="pstat-label">Ước tính còn:</span>
+              <span class="pstat-val" id="downloadEtaVal">3s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Log Preview -->
+        <div class="terminal-logs-window">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">ReData Backend Sync Console</span>
+          </div>
+          <div class="terminal-body" id="terminalLogsBody">
+            <div class="term-line"><span class="term-time">[00:00]</span> [INIT] Gửi lệnh trích xuất file tới Backend Service...</div>
+          </div>
+        </div>
+
+        <div class="text-center mt-3">
+          <p class="text-muted small">Vui lòng không đóng trình duyệt trong khi Backend đang truyền dữ liệu</p>
+        </div>
+      </div>
+
+      <!-- STEP 5 / SUCCESS: Popup Đã Lấy Về Thành Công & Nút DONE -->
+      <div class="modal-step-pane" id="paneStep5">
+        <div class="pane-header text-center">
+          <div class="icon-avatar-badge success-glow">
+            <svg class="success-check-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h3 class="pane-title text-success">Đã Lấy Về Thành Công!</h3>
+          <p class="pane-desc">Tệp dữ liệu đã được lưu trữ an toàn vào máy tính của bạn</p>
+        </div>
+
+        <!-- Success Details Card -->
+        <div class="success-details-card">
+          <div class="success-meta-row">
+            <span class="sm-label">Tên tệp:</span>
+            <span class="sm-val font-semibold text-cyan" id="successFileName">backup_archive.zip</span>
+          </div>
+          <div class="success-meta-row">
+            <span class="sm-label">Kích thước:</span>
+            <span class="sm-val" id="successFileSize">1.25 GB</span>
+          </div>
+          <div class="success-meta-row">
+            <span class="sm-label">Vị trí lưu:</span>
+            <span class="sm-val font-mono" id="successFilePath">Thư mục Downloads máy tính</span>
+          </div>
+          <div class="success-meta-row">
+            <span class="sm-label">Mã toàn vẹn (SHA256):</span>
+            <span class="sm-val font-mono text-emerald" id="successChecksum">e3b0c44298fc1c149afbf4c8996fb92427ae41e4</span>
+          </div>
+          <div class="success-meta-row">
+            <span class="sm-label">Trạng thái:</span>
+            <span class="badge-success-tag">✓ Đã đồng bộ & Xác thực</span>
+          </div>
+        </div>
+
+        <!-- Nút Nhấn DONE -->
+        <div class="modal-footer-actions single-center">
+          <button class="btn btn-done-action" id="btnDoneFinish">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>DONE</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SETTINGS MODAL (CẤU HÌNH BACKEND ENDPOINT)                    -->
+  <!-- ============================================================ -->
+  <div class="modal-backdrop hidden" id="settingsModal">
+    <div class="modal-container settings-dialog" role="dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Cấu Hình Kết Nối Backend</h3>
+        <button class="modal-close-btn" id="btnCloseSettings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3">
+          <label class="form-label" for="backendUrlInput">Backend API URL</label>
+          <input type="text" id="backendUrlInput" class="form-control" value="http://localhost:8000/api">
+          <p class="input-hint">Địa chỉ server backend của bạn (REST API hỗ trợ endpoints: /files, /save-file)</p>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="toggle-switch-label">
+            <input type="checkbox" id="mockModeToggle" checked>
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">Kích hoạt Mock Mode (Mô phỏng dữ liệu đầy đủ nếu chưa mở backend)</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tự động kích hoạt file download thực tế:</label>
+          <label class="toggle-switch-label">
+            <input type="checkbox" id="autoDownloadRealFileToggle" checked>
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">Tự động tải file blob thực tế về máy tính khi hoàn thành</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer-actions">
+        <button class="btn btn-secondary" id="btnResetSettings">Khôi phục mặc định</button>
+        <button class="btn btn-primary" id="btnSaveSettings">Lưu Cấu Hình</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
